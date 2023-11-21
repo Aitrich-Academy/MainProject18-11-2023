@@ -19,7 +19,7 @@ select *from UsersRegister
 ------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------Category Table------------------------------------------------
 CREATE TABLE ProductCategorys (
-    CategoryID INT PRIMARY KEY,
+    CategoryID INT IDENTITY(100,1) PRIMARY KEY,
     Category_Name VARCHAR(50) NOT NULL,
 	Status varchar(100),
 );
@@ -28,7 +28,7 @@ select *from ProductCategorys
 ------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------Products Table------------------------------------------------
 CREATE TABLE Products (
-    ProductID INT IDENTITY(1,1) PRIMARY KEY,
+    ProductID INT IDENTITY(200,1) PRIMARY KEY,
     Product_Name VARCHAR(500) NOT NULL,
 	Price DECIMAL NOT NULL,
     Image VARCHAR(500) NOT NULL,
@@ -41,7 +41,7 @@ select *from Products
 ----------------------------------------------------Orders Table---------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------
 CREATE TABLE Orders (
-    OrderID INT IDENTITY(100,1) PRIMARY KEY,
+    OrderID INT IDENTITY(300,1) PRIMARY KEY,
 	User__id INT,
 	Category_id int,
 	Product_id INT,
