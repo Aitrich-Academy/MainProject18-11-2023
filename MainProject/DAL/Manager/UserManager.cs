@@ -41,9 +41,9 @@ namespace DAL.Manager
                 return "Error";
             }
         }
-        public List<UsersRegister> View()
+        public List<Product> View()
         {
-            return User_db.UsersRegisters.ToList();
+            return User_db.Products.ToList();
         }
 
         public string Update(int id, UsersRegister register)
@@ -83,7 +83,7 @@ namespace DAL.Manager
             }
             else
             {
-                result = "user not found";
+                result = "Product not found";
             }
             return result;
         }     
