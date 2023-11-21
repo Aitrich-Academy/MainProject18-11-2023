@@ -119,5 +119,36 @@ namespace MainProject.Controllers
             }
         }
         #endregion
+
+        #region Filter Category Product
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [System.Web.Http.HttpGet]
+        [Route("filtercategoryproduct")]
+        [HttpPost]
+        public List<Ent_Product> FilterByCategoryProduct(string categoryName)
+        {
+            ProductManager productManager = new ProductManager();
+            List<Ent_Product> productList = new List<Ent_Product>();
+            List<ProductCategory> categories = productManager.FilterProduct(categoryName);
+            foreach (var category in categories)
+            {
+                List<Product> products = productManager.GetProductsByCategoryId(category.CategoryID);
+                foreach (var product in products)
+                {
+                    Ent_Product table_product = new Ent_Product
+                    {
+                        ProductID = product.ProductID,
+                        Product_Name = product.Product_Name,
+                        Price = product.Price,
+                        Image = product.Image,
+                        Category_id = (int)product.Category_id,
+                        Status = product.Status,
+                    };
+                    productList.Add(table_product);
+                }
+            }
+            return productList;
+        }
+        #endregion
     }
 }
