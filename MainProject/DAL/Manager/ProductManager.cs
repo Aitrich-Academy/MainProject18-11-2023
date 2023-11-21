@@ -82,5 +82,15 @@ namespace DAL.Manager
             }
             return result;
         }
+
+        public List<ProductCategory> FilterProduct(string name)
+        {
+            return model.ProductCategorys.Where(e => e.Category_Name == name && e.Status != "Delete").ToList();
+        }
+
+        public List<Product> GetProductsByCategoryId(int categoryId)
+        {
+            return model.Products.Where(p => p.Category_id == categoryId && p.Status != "Delete").ToList();
+        }
     }
 }
