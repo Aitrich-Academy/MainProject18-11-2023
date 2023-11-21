@@ -41,9 +41,9 @@ namespace DAL.Manager
                 return "Error";
             }
         }
-        public List<Product> View()
+        public List<UsersRegister> View()
         {
-            return User_db.Products.ToList();
+            return User_db.UsersRegisters.ToList();
         }
 
         public string Update(int id, UsersRegister register)
