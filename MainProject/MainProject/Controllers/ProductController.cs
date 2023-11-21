@@ -36,22 +36,22 @@ namespace MainProject.Controllers
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
         [Route("ListProduct")]
-        public List<Product> ListProducts()
+        public List<Ent_Product> ListProducts()
         {
             ProductManager productManager = new ProductManager();
-            List<Product> return_List = new List<Product>();
+            List<Ent_Product> return_List = new List<Ent_Product>();
             List<Product> table_product = productManager.List();
             if (table_product.Count != 0)
             {
                 foreach (var obj in table_product)
                 {
-                    return_List.Add(new Product
+                    return_List.Add(new Ent_Product
                     {
                         ProductID = obj.ProductID,
                         Product_Name = obj.Product_Name,
                         Price = obj.Price,
                         Image = obj.Image,
-                        Category_id = obj.Category_id,
+                        Category_id = (int)obj.Category_id,
                         Status = obj.Status
                     });
                 }
