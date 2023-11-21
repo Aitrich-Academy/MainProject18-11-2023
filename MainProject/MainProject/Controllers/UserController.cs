@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DAL.Manager;
+using DAL.Model;
+using MainProject.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,33 +10,30 @@ using System.Web.Http;
 
 namespace MainProject.Controllers
 {
+    [RoutePrefix("api/user")]
     public class UserController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [System.Web.Http.HttpGet]
+        [Route("UserRegister")]   // Url creation Route
+        [HttpPost]
+
+        public string UserRegistration(Ent_UserRegistration user)
         {
-            return new string[] { "value1", "value2" };
+
+            UserManager mng = new UserManager();
+          
+            Ent_UserRegistration ent = user;
+            UsersRegister rej = new UsersRegister();
+            rej.Name=ent.name; 
+            rej.Email=ent.email;
+            rej.PhoneNumber = ent.phonenumber;
+            rej.District=ent.district;
+            rej.Pincode=ent.pincode;
+            rej.PasswordHash=ent.passwordHash;
+            return mng.UserRegister(rej);
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }
     }
 }
