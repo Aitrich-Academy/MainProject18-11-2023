@@ -92,5 +92,11 @@ namespace DAL.Manager
         {
             return model.Products.Where(p => p.Category_id == categoryId && p.Status != "Delete").ToList();
         }
+
+        public Product Searchproduct(string name)
+        {
+            Product filterProduct = new Product();
+            return filterProduct = model.Products.Where(e => e.Product_Name == name && e.Status != "Delete").SingleOrDefault();
+        }
     }
 }

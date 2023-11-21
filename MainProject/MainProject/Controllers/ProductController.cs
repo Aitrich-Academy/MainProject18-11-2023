@@ -60,26 +60,26 @@ namespace MainProject.Controllers
         }
         #endregion
 
-        //[Route("upload")]
-        //[HttpPost]
-        //public IHttpActionResult UploadFile()
-        //{
-        //    try
-        //    {
-        //        var fileData = HttpContext.Current.Request.Files["fileData"];
-        //        if (fileData != null && fileData.ContentLength > 0)
-        //        {
-        //            string savePath = HttpContext.Current.Server.MapPath(fileData.FileName);
-        //            string saveImagePath = savePath + @"\" + fileData.FileName;
-        //            fileData.SaveAs(saveImagePath);
-        //        }
-        //        return Ok("Success");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return InternalServerError(ex);
-        //    }
-        //}
+        [Route("upload")]
+        [HttpPost]
+        public IHttpActionResult UploadFile()
+        {
+            try
+            {
+                var fileData = HttpContext.Current.Request.Files["fileData"];
+                if (fileData != null && fileData.ContentLength > 0)
+                {
+                    string savePath = HttpContext.Current.Server.MapPath(fileData.FileName);
+                    string saveImagePath = savePath + @"\" + fileData.FileName;
+                    fileData.SaveAs(saveImagePath);
+                }
+                return Ok("Success");
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
 
         #region Product Update
         [System.Web.Http.AcceptVerbs("PUT", "GET")]
@@ -125,11 +125,11 @@ namespace MainProject.Controllers
         [System.Web.Http.HttpGet]
         [Route("filtercategoryproduct")]
         [HttpPost]
-        public List<Ent_Product> FilterByCategoryProduct(string categoryName)
+        public List<Ent_Product> FilterByCategoryProduct(string name)
         {
             ProductManager productManager = new ProductManager();
             List<Ent_Product> productList = new List<Ent_Product>();
-            List<ProductCategory> categories = productManager.FilterProduct(categoryName);
+            List<ProductCategory> categories = productManager.FilterProduct(name);
             foreach (var category in categories)
             {
                 List<Product> products = productManager.GetProductsByCategoryId(category.CategoryID);
@@ -148,6 +148,29 @@ namespace MainProject.Controllers
                 }
             }
             return productList;
+        }
+        #endregion
+        
+        #region Search by Product Name
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [System.Web.Http.HttpGet]
+        [Route("searchbyproduct")]
+        [HttpPost]
+        public Ent_Product searchbyproduct(string name)
+        {
+            ProductManager productManager = new ProductManager();
+            Ent_Product table_product = new Ent_Product();
+            Product obj = productManager.Searchproduct(name);
+            if (obj != null)
+            {
+                table_product.ProductID = obj.ProductID;
+                table_product.Product_Name = obj.Product_Name;
+                table_product.Price = obj.Price;
+                table_product.Image = obj.Image;
+                table_product.Category_id = (int)obj.Category_id;
+                table_product.Status = obj.Status;
+            }
+            return table_product;
         }
         #endregion
     }
