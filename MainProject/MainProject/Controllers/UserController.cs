@@ -21,47 +21,47 @@ namespace MainProject.Controllers
         public string UserRegistration(Ent_UserRegistration user)
         {
             UserManager mng = new UserManager();
-          
+
             Ent_UserRegistration ent = user;
             UsersRegister rej = new UsersRegister();
-            rej.Name=ent.name; 
-            rej.Email=ent.email;
+            rej.Name = ent.name;
+            rej.Email = ent.email;
             rej.PhoneNumber = ent.phonenumber;
-            rej.District=ent.district;
-            rej.Pincode=ent.pincode;
-            rej.PasswordHash=ent.passwordHash;
+            rej.District = ent.district;
+            rej.Pincode = ent.pincode;
+            rej.PasswordHash = ent.passwordHash;
             return mng.UserRegister(rej);
         }
 
-        //#region View all Users
-        //[System.Web.Http.AcceptVerbs("GET", "POST")]
-        //[System.Web.Http.HttpGet]
-        //[Route("ViewUser")]
-        //public List<UsersRegister> ViewUser()
-        //{
-        //    UserManager userManager = new UserManager();
-        //    List<Ent_UserRegistration> return_List = new List<Ent_UserRegistration>();
-        //    List<UsersRegister> table_user = userManager.View();
-        //    if (table_user.Count != 0)
-        //    {
-        //        foreach (var obj in table_user)
-        //        {
-        //            return_List.Add(new Ent_UserRegistration
-        //            {
-        //                id = obj.UserID,
-        //                name = obj.Name,
-        //                email = obj.Email,
-        //                phonenumber = obj.PhoneNumber,
-        //                district = obj.District,
-        //                pincode = obj.Pincode,
-        //                status = obj.Status
-        //            });
-        //        }
-        //    }
-        //    return return_List;
-        //}
-        //#endregion
-
+        #region View all Users
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [System.Web.Http.HttpGet]
+        [Route("ViewUser")]
+        public List<Ent_UserRegistration> ViewUser()
+        {
+            UserManager userManager = new UserManager();
+            List<Ent_UserRegistration> return_List = new List<Ent_UserRegistration>();
+            List<UsersRegister> table_user =userManager.View();
+            if (table_user.Count != 0)
+            {
+                foreach (var obj in table_user)
+                {
+                    return_List.Add(new Ent_UserRegistration
+                    {
+                        id = obj.UserID,
+                        name = obj.Name,
+                        email = obj.Email,
+                      phonenumber=(long)obj.PhoneNumber,
+                        district = obj.District,
+                        pincode = obj.Pincode,
+                        status = obj.Status
+                    });
+                }
+            }
+            return return_List;
+          
+        }
+        #endregion
 
         #region User Update
         [System.Web.Http.AcceptVerbs("PUT", "GET")]
@@ -80,6 +80,7 @@ namespace MainProject.Controllers
                 return Ok("Error updating user");
             }
         }
+
         #endregion
 
         #region User Delete
@@ -101,5 +102,7 @@ namespace MainProject.Controllers
             }
         }
         #endregion
+
     }
 }
+    
