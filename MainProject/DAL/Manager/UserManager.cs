@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Models;
+using Microsoft.Win32;
 
 namespace DAL.Manager
 { 
@@ -19,18 +20,17 @@ namespace DAL.Manager
             if (rej != null)
             {
                 UsersRegister objct = new UsersRegister();
-
                 objct.Name = rej.Name;
                 objct.Email = rej.Email;
                 objct.PhoneNumber = rej.PhoneNumber;
                 objct.District = rej.District;
                 objct.Pincode = rej.Pincode;
+                objct.Roll = "USER";
+                objct.Profile_Image = rej.Profile_Image;
                 objct.PasswordHash = rej.PasswordHash;
-                objct.Status = "A";
+                objct.Status = "Active";
                 User_db.UsersRegisters.Add(objct);
-
                 result = User_db.SaveChanges();
-
             }
             if (result > 0)
             {
@@ -63,6 +63,8 @@ namespace DAL.Manager
                 update.PhoneNumber = register.PhoneNumber;
                 update.District = register.District;
                 update.Pincode = register.Pincode;
+                update.Roll = "USER";
+                update.Profile_Image = register.Profile_Image;
                 update.PasswordHash = register.PasswordHash;
                 update.Status = "Active";
 

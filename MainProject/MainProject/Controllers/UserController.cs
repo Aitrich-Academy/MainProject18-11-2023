@@ -15,26 +15,28 @@ namespace MainProject.Controllers
     public class UserController : ApiController
     {
         UserManager mng = new UserManager();
-        // GET api/<controller>
+
+        #region User Register
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
-        [Route("UserRegister")]   // Url creation Route
+        [Route("UserRegister")] 
         [HttpPost]
         public string UserRegistration(Ent_UserRegistration user)
-        {
-           
-          
+        {                  
             Ent_UserRegistration ent = user;
             UsersRegister rej = new UsersRegister();
-            rej.Name=ent.name; 
-            rej.Email=ent.email;
+            rej.Name = ent.name; 
+            rej.Email = ent.email;
             rej.PhoneNumber = ent.phonenumber;
-            rej.District=ent.district;
-            rej.Pincode=ent.pincode;
-            rej.PasswordHash=ent.passwordHash;
+            rej.District = ent.district;
+            rej.Pincode = ent.pincode;
+            rej.Profile_Image = ent.profile_image;
+            rej.PasswordHash = ent.passwordHash;
             return mng.UserRegister(rej);
         }
+        #endregion
 
+        #region Login
         [Route("Login")]
         [HttpPost]
         public HttpResponseMessage Login(Ent_UserRegistration user)
@@ -58,8 +60,8 @@ namespace MainProject.Controllers
                     loginResponseDTO.user_id = result.UserID;
                     loginResponseDTO.district = result.District;
                     loginResponseDTO.phone = (long)result.PhoneNumber;
-                    loginResponseDTO.role = result.role;
-                    loginResponseDTO.name = result.USER_NAME;
+                    loginResponseDTO.role = result.Roll;
+                    loginResponseDTO.name = result.Name;
 
                     ResponseDataDTO response = new ResponseDataDTO(true, "Success", loginResponseDTO);
                     return Request.CreateResponse(HttpStatusCode.OK, response);
@@ -81,9 +83,7 @@ namespace MainProject.Controllers
                 });
             }
         }
-
-
-
+        #endregion
 
         #region View all Users
         [System.Web.Http.AcceptVerbs("GET", "POST")]
@@ -106,6 +106,7 @@ namespace MainProject.Controllers
                         phonenumber = (long)obj.PhoneNumber,
                         district = obj.District,
                         pincode = obj.Pincode,
+                        profile_image = obj.Profile_Image,
                         status = obj.Status
                     });
                 }
@@ -113,7 +114,6 @@ namespace MainProject.Controllers
             return return_List;
         }
         #endregion
-
 
         #region User Update
         [System.Web.Http.AcceptVerbs("PUT", "GET")]
