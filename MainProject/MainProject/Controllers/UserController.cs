@@ -33,6 +33,7 @@ namespace MainProject.Controllers
             return mng.UserRegister(rej);
         }
 
+
         #region View all Users
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
