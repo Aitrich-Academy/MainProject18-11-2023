@@ -1,6 +1,7 @@
 ﻿using DAL.Manager;
 using DAL.Models;
 using MainProject.Models;
+using MainProject.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace MainProject.Controllers
     [RoutePrefix("api/user")]
     public class UserController : ApiController
     {
+        UserManager mng = new UserManager();
         // GET api/<controller>
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
@@ -20,7 +22,7 @@ namespace MainProject.Controllers
         [HttpPost]
         public string UserRegistration(Ent_UserRegistration user)
         {
-            UserManager mng = new UserManager();
+           
           
             Ent_UserRegistration ent = user;
             UsersRegister rej = new UsersRegister();
@@ -33,6 +35,55 @@ namespace MainProject.Controllers
             return mng.UserRegister(rej);
         }
 
+        [Route("Login")]
+        [HttpPost]
+        public HttpResponseMessage Login(Ent_UserRegistration user)
+        {
+            if (user != null && ModelState.IsValid)
+            {
+                Ent_UserRegistration ent = user;
+                UsersRegister usr = new UsersRegister();
+
+                usr.Email = ent.email;
+                usr.PasswordHash = ent.passwordHash;
+
+                UsersRegister result = mng.UserLogin(usr);
+
+                if (result != null)
+                {
+                    String token = TokenManager.GenerateToken(result);
+                    LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+                    loginResponseDTO.Token = token;
+                    loginResponseDTO.email = result.Email;
+                    loginResponseDTO.user_id = result.UserID;
+                    loginResponseDTO.district = result.District;
+                    loginResponseDTO.phone = (long)result.PhoneNumber;
+                    loginResponseDTO.role = result.role;
+                    loginResponseDTO.name = result.USER_NAME;
+
+                    ResponseDataDTO response = new ResponseDataDTO(true, "Success", loginResponseDTO);
+                    return Request.CreateResponse(HttpStatusCode.OK, response);
+                    //return Request.CreateErrorResponse(HttpStatusCode.OK, result);
+
+                    //return Request.CreateErrorResponse(HttpStatusCode.OK, "Success");
+                }
+                else
+                {
+                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid User name and password !");
+                }
+            }
+            else
+            {
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new
+                {
+                    Errors = UtilsConfig.GetErrorListFromModelState(ModelState)
+                });
+            }
+        }
+
+
+
 
         #region View all Users
         [System.Web.Http.AcceptVerbs("GET", "POST")]
@@ -40,9 +91,9 @@ namespace MainProject.Controllers
         [Route("ViewUser")]
         public List<Ent_UserRegistration> ViewUser()
         {
-            UserManager userManager = new UserManager();
+           
             List<Ent_UserRegistration> return_List = new List<Ent_UserRegistration>();
-            List<UsersRegister> table_user = userManager.View();
+            List<UsersRegister> table_user = mng.View();
             if (table_user.Count != 0)
             {
                 foreach (var obj in table_user)
@@ -70,8 +121,7 @@ namespace MainProject.Controllers
         [Route("UpdateUser")]
         public IHttpActionResult UpdateUser(int id, UsersRegister register)
         {
-            UserManager userManager = new UserManager();
-            string result = userManager.Update(id, register);
+            string result = mng.Update(id, register);
             if (result == "Success")
             {
                 return Ok("User update successfully");
@@ -90,8 +140,8 @@ namespace MainProject.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteUser(int id)
         {
-            UserManager userManager = new UserManager();
-            string result = userManager.Delete(id);
+            
+            string result = mng.Delete(id);
             if (result == "Success")
             {
                 return Ok("user Deleted Successfully");
