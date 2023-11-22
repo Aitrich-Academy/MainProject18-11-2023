@@ -55,27 +55,6 @@ namespace MainProject.Controllers
         }
         #endregion
 
-        //[Route("upload")]
-        //[HttpPost]
-        //public IHttpActionResult UploadFile()
-        //{
-        //    try
-        //    {
-        //        var fileData = HttpContext.Current.Request.Files["fileData"];
-        //        if (fileData != null && fileData.ContentLength > 0)
-        //        {
-        //            string savePath = HttpContext.Current.Server.MapPath(fileData.FileName);
-        //            string saveImagePath = savePath + @"\" + fileData.FileName;
-        //            fileData.SaveAs(saveImagePath);
-        //        }
-        //        return Ok("Success");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return InternalServerError(ex);
-        //    }
-        //}
-
         #region Category Update
         [System.Web.Http.AcceptVerbs("PUT", "GET")]
         [System.Web.Http.HttpPut]
@@ -114,7 +93,5 @@ namespace MainProject.Controllers
             }
         }
         #endregion
-
-
     }
 }

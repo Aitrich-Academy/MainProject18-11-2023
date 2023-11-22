@@ -75,17 +75,5 @@ namespace DAL.Manager
             }
             return result;
         }
-
-        public List<ProductCategory> FilterProduct(string name)
-        {
-            return model.ProductCategorys.Where(e => e.Category_Name == name && e.Status != "Delete").ToList();
-        }
-
-        public List<ProductCategory> GetProductsByCategoryId(int categoryId)
-        {
-            return model.ProductCategorys.Where(p => p.CategoryID == categoryId && p.Status != "Delete").ToList();
-        }
     }
 }
-
-
