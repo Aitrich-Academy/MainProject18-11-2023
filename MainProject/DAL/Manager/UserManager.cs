@@ -41,6 +41,12 @@ namespace DAL.Manager
                 return "Error";
             }
         }
+        public UsersRegister UserLogin(UsersRegister usr)
+        {
+            var log =User_db.UsersRegisters.Where(e=>e.Email.Equals(usr.Email)&&e.PasswordHash.Equals(usr.PasswordHash)).FirstOrDefault();
+            return log;
+        }
+
         public List<UsersRegister> View()
         {
             return User_db.UsersRegisters.ToList();
