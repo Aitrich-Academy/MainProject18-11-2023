@@ -37,52 +37,52 @@ namespace MainProject.Controllers
         #endregion
 
         #region Login
-        [Route("Login")]
-        [HttpPost]
-        public HttpResponseMessage Login(Ent_UserRegistration user)
-        {
-            if (user != null && ModelState.IsValid)
-            {
-                Ent_UserRegistration ent = user;
-                UsersRegister usr = new UsersRegister();
+        //[Route("Login")]
+        //[HttpPost]
+        //public HttpResponseMessage Login(Ent_UserRegistration user)
+        //{
+        //    if (user != null && ModelState.IsValid)
+        //    {
+        //        Ent_UserRegistration ent = user;
+        //        UsersRegister usr = new UsersRegister();
 
-                usr.Email = ent.email;
-                usr.PasswordHash = ent.passwordHash;
+        //        usr.Email = ent.email;
+        //        usr.PasswordHash = ent.passwordHash;
 
-                UsersRegister result = mng.UserLogin(usr);
+        //        UsersRegister result = mng.UserLogin(usr);
 
-                if (result != null)
-                {
-                    String token = TokenManager.GenerateToken(result);
-                    LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
-                    loginResponseDTO.Token = token;
-                    loginResponseDTO.email = result.Email;
-                    loginResponseDTO.user_id = result.UserID;
-                    loginResponseDTO.district = result.District;
-                    loginResponseDTO.phone = (long)result.PhoneNumber;
-                    loginResponseDTO.role = result.Roll;
-                    loginResponseDTO.name = result.Name;
+        //        if (result != null)
+        //        {
+        //            String token = TokenManager.GenerateToken(result);
+        //            LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+        //            loginResponseDTO.Token = token;
+        //            loginResponseDTO.email = result.Email;
+        //            loginResponseDTO.user_id = result.UserID;
+        //            loginResponseDTO.district = result.District;
+        //            loginResponseDTO.phone = (long)result.PhoneNumber;
+        //            loginResponseDTO.role = result.Roll;
+        //            loginResponseDTO.name = result.Name;
 
-                    ResponseDataDTO response = new ResponseDataDTO(true, "Success", loginResponseDTO);
-                    return Request.CreateResponse(HttpStatusCode.OK, response);
-                    //return Request.CreateErrorResponse(HttpStatusCode.OK, result);
+        //            ResponseDataDTO response = new ResponseDataDTO(true, "Success", loginResponseDTO);
+        //            return Request.CreateResponse(HttpStatusCode.OK, response);
+        //            //return Request.CreateErrorResponse(HttpStatusCode.OK, result);
 
-                    //return Request.CreateErrorResponse(HttpStatusCode.OK, "Success");
-                }
-                else
-                {
-                    return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid User name and password !");
-                }
-            }
-            else
-            {
-                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new
-                {
-                    Errors = UtilsConfig.GetErrorListFromModelState(ModelState)
-                });
-            }
-        }
+        //            //return Request.CreateErrorResponse(HttpStatusCode.OK, "Success");
+        //        }
+        //        else
+        //        {
+        //            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Invalid User name and password !");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+        //        return Request.CreateResponse(HttpStatusCode.BadRequest, new
+        //        {
+        //            Errors = UtilsConfig.GetErrorListFromModelState(ModelState)
+        //        });
+        //    }
+        //}
         #endregion
 
         #region View all Users
@@ -106,6 +106,7 @@ namespace MainProject.Controllers
                         phonenumber = (long)obj.PhoneNumber,
                         district = obj.District,
                         pincode = obj.Pincode,
+                        roll = obj.Roll,
                         profile_image = obj.Profile_Image,
                         status = obj.Status
                     });
