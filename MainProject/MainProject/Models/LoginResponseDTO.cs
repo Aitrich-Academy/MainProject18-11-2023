@@ -17,4 +17,3 @@ namespace MainProject.Models
         public string role { get; set; }
     }
     }
-}
