@@ -3,6 +3,7 @@ using DAL.Models;
 using MainProject.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -60,26 +61,44 @@ namespace MainProject.Controllers
         }
         #endregion
 
-        [Route("upload")]
+        #region File Upload
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [System.Web.Http.HttpGet]
+        [Route("FileUpload")]
         [HttpPost]
         public IHttpActionResult UploadFile()
         {
             try
             {
-                var fileData = HttpContext.Current.Request.Files["fileData"];
-                if (fileData != null && fileData.ContentLength > 0)
+                string[] AllowedFileExt = new string[] { ".jpg", ".png" };
+                var httpRequest = HttpContext.Current.Request;
+                if (httpRequest.Files.Count == 0)
                 {
-                    string savePath = HttpContext.Current.Server.MapPath(fileData.FileName);
-                    string saveImagePath = savePath + @"\" + fileData.FileName;
-                    fileData.SaveAs(saveImagePath);
+                    return BadRequest("No file to upload");
                 }
-                return Ok("Success");
+
+                var postedFile = httpRequest.Files[0];
+                if (!AllowedFileExt.Contains(postedFile.FileName.Substring(postedFile.FileName.LastIndexOf("."))))
+                {
+                    return BadRequest("Invalid File Format");
+                }
+
+                var fileName = Path.GetFileName(postedFile.FileName);
+                var filePath = HttpContext.Current.Server.MapPath("~/ProductImages/" + fileName);
+                if (File.Exists(filePath))
+                {
+                    return BadRequest("A file with the same name already exists.");
+                }
+                postedFile.SaveAs(filePath);
+
+                return Ok("File Uploaded Successfully");
             }
             catch (Exception ex)
             {
                 return InternalServerError(ex);
             }
         }
+        #endregion
 
         #region Product Update
         [System.Web.Http.AcceptVerbs("PUT", "GET")]
