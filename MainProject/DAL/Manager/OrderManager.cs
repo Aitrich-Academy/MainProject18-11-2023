@@ -7,30 +7,27 @@ using System.Xml.Linq;
 using DAL.Models;
 
 namespace DAL.Manager
-{
-    
+{    
     public class OrderManager
     {
         Model1 book = new Model1();
-
-       
+        
         public string BookingDetail(Order ord)
         {
-            int result = 0;
-            
+            int result = 0;            
             if(ord != null) 
             {
-                Order order=new Order();
+                Order order = new Order();
                 order.OrderID = ord.OrderID;
                 order.User__id = ord.User__id;
-                order.Category_id=ord.Category_id;
-                order.Product_id=ord.Product_id;
+                order.Category_id = ord.Category_id;
+                order.Product_id = ord.Product_id;
                 order.Product_Name = ord.Product_Name;
-                order.Price=ord.Price;
-                order.Quantity=ord.Quantity;
-                order.Total_Price=ord.Total_Price;
-                order.Image=ord.Image;
-                order.OrderDate=DateTime.Now;
+                order.Price = ord.Price;
+                order.Quantity = ord.Quantity;
+                order.Total_Price = ord.Total_Price;
+                order.Image = ord.Image;
+                order.OrderDate = DateTime.Now;
                 order.Status = "Active";
                 book.Orders.Add(order);
 
@@ -39,13 +36,12 @@ namespace DAL.Manager
         
             if (result > 0)
             {
-                return "Successfully Registered";
+                return "Order Successfully";
             }
             else
             {
                 return "Error";
             }
-
         }
         public int GetPrice(Order ord) 
         {
@@ -60,7 +56,6 @@ namespace DAL.Manager
             }
         }
       
-
         public List<Order> View()
         {
             return book.Orders.ToList();
@@ -82,7 +77,5 @@ namespace DAL.Manager
             }
             return result;
         }
-
-
     }
 }
