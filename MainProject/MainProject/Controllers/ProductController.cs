@@ -15,6 +15,8 @@ namespace MainProject.Controllers
     [RoutePrefix("api/product")]
     public class ProductController : ApiController
     {
+        ProductManager productManager = new ProductManager();
+
         #region Product Insert
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
@@ -22,7 +24,6 @@ namespace MainProject.Controllers
         [HttpPost]
         public string InsertProduct(Ent_Product ent_Product) 
         {
-            ProductManager productManager = new ProductManager();
             Ent_Product obj = ent_Product;
             Product table_product = new Product();
             table_product.Product_Name = obj.Product_Name;
@@ -39,7 +40,6 @@ namespace MainProject.Controllers
         [Route("ListProduct")]
         public List<Ent_Product> ListProducts()
         {
-            ProductManager productManager = new ProductManager();
             List<Ent_Product> return_List = new List<Ent_Product>();
             List<Product> table_product = productManager.List();
             if (table_product.Count != 0)
@@ -106,7 +106,6 @@ namespace MainProject.Controllers
         [Route("UpdateProduct")]
         public IHttpActionResult UpdateProduct(int id, Product product)
         {
-            ProductManager productManager = new ProductManager();
             string result = productManager.Update(id, product);
             if (result == "Success")
             {
@@ -126,7 +125,6 @@ namespace MainProject.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteProduct(int id)
         {
-            ProductManager productManager = new ProductManager();
             string result = productManager.Delete(id);
             if (result == "Success")
             {
@@ -139,6 +137,28 @@ namespace MainProject.Controllers
         }
         #endregion
 
+        #region Product by Id
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [System.Web.Http.HttpGet]
+        [Route("ProductbyId")]
+        [HttpPost]
+        public Ent_Product userDetailsByID(string id)
+        {
+            Ent_Product table_product = new Ent_Product();
+            Product obj = productManager.ProductbyId(Convert.ToInt32(id));
+
+            if (obj != null)
+            {
+                table_product.Product_Name = obj.Product_Name;
+                table_product.Price = obj.Price;
+                table_product.Image = obj.Image;
+                table_product.Category_id = (int)obj.Category_id;
+                table_product.Status = obj.Status;
+            }
+            return table_product;
+        }
+        #endregion
+
         #region Filter Category Product
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
@@ -146,7 +166,6 @@ namespace MainProject.Controllers
         [HttpPost]
         public List<Ent_Product> FilterByCategoryProduct(string name)
         {
-            ProductManager productManager = new ProductManager();
             List<Ent_Product> productList = new List<Ent_Product>();
             List<ProductCategory> categories = productManager.FilterProduct(name);
             foreach (var category in categories)
@@ -177,7 +196,6 @@ namespace MainProject.Controllers
         [HttpPost]
         public Ent_Product searchbyproduct(string name)
         {
-            ProductManager productManager = new ProductManager();
             Ent_Product table_product = new Ent_Product();
             Product obj = productManager.Searchproduct(name);
             if (obj != null)

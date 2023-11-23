@@ -75,5 +75,11 @@ namespace DAL.Manager
             }
             return result;
         }
+
+        public ProductCategory CategorybyId(int Id)
+        {
+            ProductCategory return_Obj = new ProductCategory();
+            return return_Obj = model.ProductCategorys.Where(e => e.CategoryID == Id && e.Status != "D").SingleOrDefault();
+        }
     }
 }

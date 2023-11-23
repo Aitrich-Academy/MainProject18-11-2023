@@ -83,6 +83,12 @@ namespace DAL.Manager
             return result;
         }
 
+        public Product ProductbyId(int Id)
+        {
+            Product return_Obj = new Product();
+            return return_Obj = model.Products.Where(e => e.ProductID == Id && e.Status != "D").SingleOrDefault();
+        }
+
         public List<ProductCategory> FilterProduct(string name)
         {
             return model.ProductCategorys.Where(e => e.Category_Name == name && e.Status != "Delete").ToList();
