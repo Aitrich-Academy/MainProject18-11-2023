@@ -123,10 +123,10 @@ namespace MainProject.Controllers
         [System.Web.Http.HttpGet]
         [Route("OrderbyId")]
         [HttpPost]
-        public Ent_Order orderByDate(string id)
+        public Ent_Order orderByDate(DateTime date)
         {
             Ent_Order table_order = new Ent_Order();
-            Order obj = orderManager.OrderbyDate(Convert.ToInt32(id));
+            Order obj = orderManager.OrderbyDate(date);
 
             if (obj != null)
             {
