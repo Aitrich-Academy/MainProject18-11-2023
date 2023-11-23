@@ -41,7 +41,7 @@ namespace DAL.Manager
         public string Update(int id, ProductCategory category)
         {
             string result = "";
-            ProductCategory update = model.ProductCategorys.Where(e => e.CategoryID == id && e.Status != "D").FirstOrDefault();
+            ProductCategory update = model.ProductCategorys.Where(e => e.CategoryID == id && e.Status != "Delete").FirstOrDefault();
             if (update != null)
             {
                 update.Category_Name = category.Category_Name;
@@ -79,7 +79,7 @@ namespace DAL.Manager
         public ProductCategory CategorybyId(int Id)
         {
             ProductCategory return_Obj = new ProductCategory();
-            return return_Obj = model.ProductCategorys.Where(e => e.CategoryID == Id && e.Status != "D").SingleOrDefault();
+            return return_Obj = model.ProductCategorys.Where(e => e.CategoryID == Id && e.Status != "Delete").SingleOrDefault();
         }
     }
 }
