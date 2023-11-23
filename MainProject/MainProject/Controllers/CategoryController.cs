@@ -137,7 +137,7 @@ namespace MainProject.Controllers
         [System.Web.Http.HttpGet]
         [Route("CategorybyId")]
         [HttpPost]
-        public Ent_Category userDetailsByID(string id)
+        public Ent_Category categoryByID(string id)
         {
             Ent_Category table_ProductCategorys = new Ent_Category();
             ProductCategory obj = categoryManager.CategorybyId(Convert.ToInt32(id));

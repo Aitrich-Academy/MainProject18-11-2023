@@ -14,14 +14,15 @@ namespace MainProject.Controllers
     [RoutePrefix("api/Order")]
     public class OrderController : ApiController
     {
+        OrderManager orderManager = new OrderManager();
+        
         #region Confirm Order
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
-        [Route("BookingDetail")]   // Url creation Route
+        [Route("BookingDetail")]
         [HttpPost]
         public string BookingDetail(Ent_Order order)
-        {
-            OrderManager manager = new OrderManager();            
+        {           
             Ent_Order order2 = order;
             Order order1 = new Order();
             order1.OrderID = order2.OrderID;
@@ -29,13 +30,13 @@ namespace MainProject.Controllers
             order1.Category_id = order2.category_id;
             order1.Product_id = order2.ProductID;
             order1.Product_Name = order2.ProductName;
-            int productprice=manager.GetPrice(order1);
+            int productprice = orderManager.GetPrice(order1);
             order1.Price = order2.Price;
             order1.Quantity = order2.Quantity;
-            order1.Total_Price = order2.Quantity* productprice;
+            order1.Total_Price = order2.Quantity * productprice;
             order1.Image = order2.Image;
             order1.OrderDate = DateTime.Now;
-            return manager.BookingDetail(order1);
+            return orderManager.BookingDetail(order1);
         }
         #endregion
 
@@ -45,9 +46,8 @@ namespace MainProject.Controllers
         [Route("View")]
         public List<Ent_Order> ViewUser()
         {
-            OrderManager manager= new OrderManager();
             List<Ent_Order> return_List = new List<Ent_Order>();
-            List<Order> table_user = manager.View();
+            List<Order> table_user = orderManager.View();
             if (table_user.Count != 0)
             {
                 foreach (var obj in table_user)
@@ -63,7 +63,7 @@ namespace MainProject.Controllers
                         Quantity = obj.Quantity,
                         Total_Price = obj.Total_Price,
                         Image = obj.Image,
-                        OrderDate = DateTime.Now,
+                        Order_Date = DateTime.Now,
                         Status = obj.Status                 
                     });
                 }
@@ -79,7 +79,6 @@ namespace MainProject.Controllers
         [HttpDelete]
         public IHttpActionResult DeleteUser(int id)
         {
-            OrderManager orderManager = new OrderManager();
             string result = orderManager.Delete(id);
             if (result == "Success")
             {
@@ -89,6 +88,60 @@ namespace MainProject.Controllers
             {
                 return Ok("Error Cancel product: " + result);
             }
+        }
+        #endregion
+
+        #region Order by Id
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [System.Web.Http.HttpGet]
+        [Route("OrderbyId")]
+        [HttpPost]
+        public Ent_Order orderByID(string id)
+        {
+            Ent_Order table_order = new Ent_Order();
+            Order obj = orderManager.OrderbyId(Convert.ToInt32(id));
+
+            if (obj != null)
+            {
+                table_order.OrderID = obj.OrderID;
+                table_order.Userid = (int)obj.User__id;
+                table_order.category_id = (int)obj.Category_id;
+                table_order.ProductID = (int)obj.Product_id;
+                table_order.ProductName = obj.Product_Name;
+                table_order.Price = obj.Price;
+                table_order.Quantity = obj.Quantity;
+                table_order.Total_Price = obj.Total_Price;
+                table_order.Image = obj.Image;
+                table_order.Order_Date = obj.OrderDate;
+            }
+            return table_order;
+        }
+        #endregion
+
+        #region Order by Date
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [System.Web.Http.HttpGet]
+        [Route("OrderbyId")]
+        [HttpPost]
+        public Ent_Order orderByDate(string id)
+        {
+            Ent_Order table_order = new Ent_Order();
+            Order obj = orderManager.OrderbyDate(Convert.ToInt32(id));
+
+            if (obj != null)
+            {
+                table_order.OrderID = obj.OrderID;
+                table_order.Userid = (int)obj.User__id;
+                table_order.category_id = (int)obj.Category_id;
+                table_order.ProductID = (int)obj.Product_id;
+                table_order.ProductName = obj.Product_Name;
+                table_order.Price = obj.Price;
+                table_order.Quantity = obj.Quantity;
+                table_order.Total_Price = obj.Total_Price;
+                table_order.Image = obj.Image;
+                table_order.Order_Date = obj.OrderDate;
+            }
+            return table_order;
         }
         #endregion
     }

@@ -86,7 +86,7 @@ namespace DAL.Manager
         public Product ProductbyId(int Id)
         {
             Product return_Obj = new Product();
-            return return_Obj = model.Products.Where(e => e.ProductID == Id && e.Status != "D").SingleOrDefault();
+            return return_Obj = model.Products.Where(e => e.ProductID == Id && e.Status != "Delete").SingleOrDefault();
         }
 
         public List<ProductCategory> FilterProduct(string name)

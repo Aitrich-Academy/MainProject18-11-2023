@@ -161,49 +161,38 @@ namespace MainProject.Controllers
         #region Profile Upload
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
+        [Route("FileUpload")]
         [HttpPost]
-        [Route("ProfileUpload")]
-        public HttpResponseMessage ProfileUpload()
+        public IHttpActionResult UploadFile()
         {
-            AuthenticationHeaderValue authorization = Request.Headers.Authorization;
-            if (authorization == null)
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, "no acc1");
-            }
-            Ent_UserRegistration usersDTO = TokenManager.ValidateToken(authorization.Parameter);
+                string[] AllowedFileExt = new string[] { ".jpg", ".png" };
+                var httpRequest = HttpContext.Current.Request;
+                if (httpRequest.Files.Count == 0)
+                {
+                    return BadRequest("No file to upload");
+                }
 
-            if (usersDTO != null && usersDTO.id != null && usersDTO.roll == "USER")
-            {
-                try
+                var postedFile = httpRequest.Files[0];
+                if (!AllowedFileExt.Contains(postedFile.FileName.Substring(postedFile.FileName.LastIndexOf("."))))
                 {
-                    string[] AllowedFileExt = new string[] { ".jpg", ".png" };
-                    var httpRequest = HttpContext.Current.Request;
-                    if (httpRequest.Files.Count == 0)
-                    {
-                        return Request.CreateResponse("No file to upload");
-                    }
-                    var postedFile = httpRequest.Files[0];
-                    if (!AllowedFileExt.Contains(postedFile.FileName.Substring(postedFile.FileName.LastIndexOf("."))))
-                    {
-                        return Request.CreateResponse("Invalid File Format");
-                    }
-                    var fileName = Path.GetFileName(postedFile.FileName);
-                    var filePath = HttpContext.Current.Server.MapPath("~/ProfileImages/" + fileName);
-                    if (File.Exists(filePath))
-                    {
-                        return Request.CreateResponse("A file with the same name already exists.");
-                    }
-                    postedFile.SaveAs(filePath);
-                    return Request.CreateResponse("File Uploaded Successfully");
+                    return BadRequest("Invalid File Format");
                 }
-                catch (Exception ex)
+
+                var fileName = Path.GetFileName(postedFile.FileName);
+                var filePath = HttpContext.Current.Server.MapPath("~/ProductImages/" + fileName);
+                if (File.Exists(filePath))
                 {
-                    return Request.CreateResponse(ex);
+                    return BadRequest("A file with the same name already exists.");
                 }
+                postedFile.SaveAs(filePath);
+
+                return Ok("File Uploaded Successfully");
             }
-            else
+            catch (Exception ex)
             {
-                return Request.CreateResponse("no access login again");
+                return InternalServerError(ex);
             }
         }
         #endregion

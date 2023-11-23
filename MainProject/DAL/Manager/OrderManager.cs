@@ -73,9 +73,21 @@ namespace DAL.Manager
             }
             else
             {
-                result = "Product not found";
+                result = "Order not found";
             }
             return result;
+        }
+
+        public Order OrderbyId(int Id)
+        {
+            Order return_Obj = new Order();
+            return return_Obj = book.Orders.Where(e => e.OrderID == Id && e.Status != "Delete").SingleOrDefault();
+        }
+
+        public Order OrderbyDate(DateTime date)
+        {
+            Order return_Obj = new Order();
+            return return_Obj = book.Orders.Where(e => e.OrderDate == date && e.Status != "Delete").SingleOrDefault();
         }
     }
 }
