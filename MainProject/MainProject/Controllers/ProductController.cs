@@ -149,6 +149,7 @@ namespace MainProject.Controllers
 
             if (obj != null)
             {
+                table_product.ProductID = Convert.ToInt32(obj.ProductID);
                 table_product.Product_Name = obj.Product_Name;
                 table_product.Price = obj.Price;
                 table_product.Image = obj.Image;
