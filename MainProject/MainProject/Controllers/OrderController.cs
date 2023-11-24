@@ -75,7 +75,7 @@ namespace MainProject.Controllers
         #region Cancel Order
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
-        [Route("DeleteOrder")]
+        [Route("CancelOrder")]
         [HttpDelete]
         public IHttpActionResult DeleteUser(int id)
         {
@@ -104,15 +104,16 @@ namespace MainProject.Controllers
             if (obj != null)
             {
                 table_order.OrderID = obj.OrderID;
+                table_order.ProductID = (int)obj.Product_id;
                 table_order.Userid = (int)obj.User__id;
                 table_order.category_id = (int)obj.Category_id;
-                table_order.ProductID = (int)obj.Product_id;
                 table_order.ProductName = obj.Product_Name;
                 table_order.Price = obj.Price;
                 table_order.Quantity = obj.Quantity;
-                table_order.Total_Price = obj.Total_Price;
                 table_order.Image = obj.Image;
                 table_order.Order_Date = obj.OrderDate;
+                table_order.Status = obj.Status;
+                table_order.Total_Price = obj.Total_Price;
             }
             return table_order;
         }
@@ -121,7 +122,7 @@ namespace MainProject.Controllers
         #region Order by Date
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
-        [Route("OrderbyId")]
+        [Route("Orderbydate")]
         [HttpPost]
         public Ent_Order orderByDate(DateTime date)
         {
@@ -131,15 +132,16 @@ namespace MainProject.Controllers
             if (obj != null)
             {
                 table_order.OrderID = obj.OrderID;
+                table_order.ProductID = (int)obj.Product_id;
                 table_order.Userid = (int)obj.User__id;
                 table_order.category_id = (int)obj.Category_id;
-                table_order.ProductID = (int)obj.Product_id;
                 table_order.ProductName = obj.Product_Name;
                 table_order.Price = obj.Price;
                 table_order.Quantity = obj.Quantity;
-                table_order.Total_Price = obj.Total_Price;
                 table_order.Image = obj.Image;
                 table_order.Order_Date = obj.OrderDate;
+                table_order.Status = obj.Status;
+                table_order.Total_Price = obj.Total_Price;
             }
             return table_order;
         }
