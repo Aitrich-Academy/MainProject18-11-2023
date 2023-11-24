@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -8,15 +9,15 @@ using System.Xml.Linq;
 using DAL.Models;
 
 namespace DAL.Manager
-{    
+{
     public class OrderManager
     {
         Model1 book = new Model1();
-        
+
         public string BookingDetail(Order ord)
         {
-            int result = 0;            
-            if(ord != null) 
+            int result = 0;
+            if (ord != null)
             {
                 Order order = new Order();
                 order.OrderID = ord.OrderID;
@@ -77,10 +78,10 @@ namespace DAL.Manager
                 Console.WriteLine("Error sending email to admin: " + ex.Message);
             }
         }
-        public int GetPrice(Order ord) 
+        public int GetPrice(Order ord)
         {
             var product = book.Products.Find(ord.Product_id);
-            if (product != null) 
+            if (product != null)
             {
                 return (int)product.Price;
             }
@@ -89,7 +90,7 @@ namespace DAL.Manager
                 return 0;
             }
         }
-      
+
         public List<Order> View()
         {
             return book.Orders.ToList();
@@ -123,5 +124,18 @@ namespace DAL.Manager
             Order return_Obj = new Order();
             return return_Obj = book.Orders.Where(e => e.OrderDate == date && e.Status != "Delete").SingleOrDefault();
         }
+
+        public List<Order> GetOrdersByUserId(int userId)
+        {
+            return book.Orders.Where(order => order.User__id == userId && order.Status != "Delete").ToList();
+        }
+        public UsersRegister GetUserByEmail(int id )
+        {
+            return book.UsersRegisters.FirstOrDefault(e => e.UserID==id && e.Status != "Delete");
+        }
+
+      
     }
 }
+
+

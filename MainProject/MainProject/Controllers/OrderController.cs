@@ -3,10 +3,12 @@ using DAL.Models;
 using MainProject.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Text;
 using System.Web.Http;
 
 namespace MainProject.Controllers
@@ -15,14 +17,14 @@ namespace MainProject.Controllers
     public class OrderController : ApiController
     {
         OrderManager orderManager = new OrderManager();
-        
+
         #region Confirm Order
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         [System.Web.Http.HttpGet]
         [Route("BookingDetail")]
         [HttpPost]
         public string BookingDetail(Ent_Order order)
-        {           
+        {
             Ent_Order order2 = order;
             Order order1 = new Order();
             order1.OrderID = order2.OrderID;
@@ -37,6 +39,7 @@ namespace MainProject.Controllers
             order1.Image = order2.Image;
             order1.OrderDate = DateTime.Now;
             return orderManager.BookingDetail(order1);
+
         }
         #endregion
 
@@ -64,7 +67,7 @@ namespace MainProject.Controllers
                         Total_Price = obj.Total_Price,
                         Image = obj.Image,
                         Order_Date = DateTime.Now,
-                        Status = obj.Status                 
+                        Status = obj.Status
                     });
                 }
             }
@@ -146,5 +149,55 @@ namespace MainProject.Controllers
             return table_order;
         }
         #endregion
+        [HttpGet]
+        [Route("GetUserOrderById")]
+        public IHttpActionResult GetOrdersByEmail(int id)
+        {
+            UsersRegister user = orderManager.GetUserByEmail(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            List<Ent_Order> orderList = orderManager.GetOrdersByUserId(user.UserID)
+                .Select(order => new Ent_Order
+                {
+                    OrderID = order.OrderID,
+                    Userid = (int)order.User__id,
+                    category_id = (int)order.Category_id,
+                    ProductID = (int)order.Product_id,
+                    ProductName = order.Product_Name,
+                    Price = order.Price,
+                    Quantity = order.Quantity,
+                    Total_Price = order.Total_Price,
+                    Image = order.Image,
+                    Order_Date = order.OrderDate,
+                    Status = order.Status
+                })
+                .ToList();
+
+            Ent_UserRegistration userDetails = new Ent_UserRegistration
+            {
+                id = user.UserID,
+                name = user.Name,
+                email = user.Email,
+                phonenumber = (long)user.PhoneNumber,
+                district = user.District,
+                pincode = user.Pincode,
+                roll = user.Roll,
+                profile_image = user.Profile_Image,
+                passwordHash = user.PasswordHash,
+                status = user.Status,
+            };
+
+            return Ok(new { userDetails, orderList });
+        }
+
+
+
+
     }
+
+
 }
