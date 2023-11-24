@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -33,14 +34,47 @@ namespace DAL.Manager
 
                 result = book.SaveChanges();
             }
-        
             if (result > 0)
             {
-                return "Order Successfully";
+                // Order Successfully saved
+                // Send email to admin
+                SendEmailToAdmin("New Order Placed", "A new order has been placed. Please review.");
+
+                return "Order Successfully Placed";
             }
             else
             {
                 return "Error";
+            }
+        }
+
+        private void SendEmailToAdmin(string subject, string body)
+        {
+            try
+            {
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new System.Net.NetworkCredential("userindianplatter@gmail.com", "ukvnslehbqbxldmn"),
+                    EnableSsl = true
+                };
+
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress("userindianplatter@gmail.com"),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = false
+                };
+
+                mail.To.Add("haiindianplatter@gmail.com"); // Replace with admin's email address
+
+                smtpClient.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions, log errors, or perform any necessary actions
+                Console.WriteLine("Error sending email to admin: " + ex.Message);
             }
         }
         public int GetPrice(Order ord) 
