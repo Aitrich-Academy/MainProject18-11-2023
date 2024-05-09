@@ -23,7 +23,7 @@ E-Commerce is an online shopping platform built using ASP.Net MVC with Web API a
 
 ## Installation
 1. Clone the repository.
-2. Set up the database using the SQL scripts provided in the 'MainProject.sql' folder.
+2. Set up the database using the SQL scripts provided in the `MainProject.sql` folder.
 3. Open the project in Visual Studio.
 4. Configure connection strings in the `web.config` file.
 5. Run the application.
