@@ -1,7 +1,7 @@
 # MainProject18-11-2023
 # E-Commerce
 
-E-Commerce is an online shopping platform built using ASP.Net MVC with Web API and MS SQL Server database.
+E-Commerce is an online shopping platform built using ASP.Net Web API and MS SQL Server database.
 
 ## Features
 
@@ -17,8 +17,7 @@ E-Commerce is an online shopping platform built using ASP.Net MVC with Web API a
 - **Manage Profile:** Users can update their profile information.
 
 ## Technologies Used
-- ASP.Net MVC
-- Web API
+- ASP.Net Web API
 - MS SQL Server
 
 ## Installation
